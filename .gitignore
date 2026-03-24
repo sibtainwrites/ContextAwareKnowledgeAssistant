@@ -1,2 +1,33 @@
-# Ignore environment variables file
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment files
 .env
+.env.local
+.env.*.local
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Logs
+*.log
+npm-debug.log*
