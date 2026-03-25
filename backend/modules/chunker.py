@@ -10,7 +10,7 @@ import logging
 from collections import defaultdict
 from typing import List, Dict
 
-from langchain.text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logger = logging.getLogger(__name__)
 

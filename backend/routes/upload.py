@@ -5,6 +5,7 @@ This module provides API endpoints for uploading and managing documents
 and YouTube transcripts in the knowledge base.
 """
 
+import logging
 from typing import List
 from urllib.parse import unquote
 
@@ -15,6 +16,8 @@ from modules.pdf_processor import validate_pdf, extract_text_from_pdf
 from modules.youtube_processor import validate_youtube_url, extract_youtube_transcript
 from modules.chunker import chunk_documents
 from modules.vector_store import store_chunks, list_sources, delete_source
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -101,9 +104,10 @@ async def upload_pdf(file: UploadFile = File(...)):
     except HTTPException:
         raise
     except Exception as e:
+        logger.error(f"PDF upload error: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail="Internal server error during PDF processing"
+            detail=f"Internal server error during PDF processing: {str(e)}"
         )
 
 
@@ -141,7 +145,7 @@ async def upload_youtube(request: YoutubeUploadRequest):
         except Exception as e:
             raise HTTPException(
                 status_code=500,
-                detail="Failed to fetch transcript"
+                detail=f"Failed to fetch transcript: {str(e)}"
             )
 
         # Chunk documents
@@ -160,9 +164,10 @@ async def upload_youtube(request: YoutubeUploadRequest):
     except HTTPException:
         raise
     except Exception as e:
+        logger.error(f"YouTube upload error: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail="Internal server error during YouTube processing"
+            detail=f"Internal server error during YouTube processing: {str(e)}"
         )
 
 

@@ -48,7 +48,8 @@ def get_client() -> QdrantClient:
 
         _client = QdrantClient(
             url=settings.qdrant_url,
-            api_key=settings.qdrant_api_key
+            api_key=settings.qdrant_api_key,
+            timeout=30.0
         )
 
         # Ensure collection exists
