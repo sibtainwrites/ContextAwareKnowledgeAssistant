@@ -95,11 +95,24 @@ def extract_youtube_transcript(url: str) -> List[Dict]:
     video_id = video_id_or_error
 
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        api = YouTubeTranscriptApi()
+        transcript_list = api.list(video_id)
+        try:
+            transcript = transcript_list.find_transcript(['en', 'en-US']).fetch()
+        except NoTranscriptFound:
+            # Fallback to the first available transcript if English is not found
+            transcript = list(transcript_list)[0].fetch()
+        
         results = []
 
         for entry in transcript:
-            text = entry['text'].strip()
+            # Handle both dict and object formats for compatibility across versions
+            if isinstance(entry, dict):
+                text = entry['text'].strip()
+                start_time = entry['start']
+            else:
+                text = entry.text.strip()
+                start_time = entry.start
 
             # Remove bracketed tags like [Music], [Applause], etc.
             text = re.sub(r'\[.*?\]', '', text).strip()
@@ -108,7 +121,7 @@ def extract_youtube_transcript(url: str) -> List[Dict]:
             if not text:
                 continue
 
-            timestamp = seconds_to_timestamp(int(entry['start']))
+            timestamp = seconds_to_timestamp(int(start_time))
 
             results.append({
                 "text": text,
@@ -116,7 +129,7 @@ def extract_youtube_transcript(url: str) -> List[Dict]:
                     "source": url,
                     "type": "youtube",
                     "timestamp": timestamp,
-                    "seconds": int(entry['start'])
+                    "seconds": int(start_time)
                 }
             })
 

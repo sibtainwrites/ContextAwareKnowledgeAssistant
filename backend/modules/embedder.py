@@ -41,7 +41,7 @@ def get_embeddings_model() -> GoogleGenerativeAIEmbeddings:
     try:
         settings = get_settings()
         _embeddings_instance = GoogleGenerativeAIEmbeddings(
-            model="models/text-embedding-004",
+            model="models/gemini-embedding-001",
             google_api_key=settings.gemini_api_key
         )
         return _embeddings_instance

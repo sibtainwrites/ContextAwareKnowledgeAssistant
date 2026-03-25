@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 # Global client instance (singleton)
 _client: QdrantClient | None = None
 COLLECTION_NAME: str
-VECTOR_SIZE = 768
+VECTOR_SIZE = 3072
 
 
 def get_client() -> QdrantClient:
