@@ -158,9 +158,9 @@ def search_similar(query: str, top_k: int = 6) -> List[Dict]:
 
         # Search Qdrant
         client = get_client()
-        search_results = client.search(
+        search_response = client.query_points(
             collection_name=COLLECTION_NAME,
-            query_vector=query_vector,
+            query=query_vector,
             limit=top_k,
             score_threshold=0.4,
             with_payload=True
@@ -168,7 +168,7 @@ def search_similar(query: str, top_k: int = 6) -> List[Dict]:
 
         # Convert to standardized format
         results = []
-        for hit in search_results:
+        for hit in search_response.points:
             result = {
                 "text": hit.payload["text"],
                 "score": hit.score,

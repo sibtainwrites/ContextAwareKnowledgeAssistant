@@ -65,7 +65,7 @@ def embed_texts(texts: List[str]) -> List[List[float]]:
         texts: List of text strings to embed.
 
     Returns:
-        List of embedding vectors, each as a list of floats (768 dimensions).
+        List of embedding vectors, each as a list of floats (3072 dimensions).
 
     Raises:
         Exception: Re-raises any embedding API errors after retries are exhausted.
@@ -75,7 +75,7 @@ def embed_texts(texts: List[str]) -> List[List[float]]:
     model = get_embeddings_model()
     embeddings = model.embed_documents(texts)
 
-    logger.info(f"Embeddings complete, dimension=768")
+    logger.info(f"Embeddings complete, dimension=3072")
     return embeddings
 
 
@@ -95,7 +95,7 @@ def embed_query(text: str) -> List[float]:
         text: Query text string to embed.
 
     Returns:
-        Embedding vector as a list of floats (768 dimensions).
+        Embedding vector as a list of floats (3072 dimensions).
 
     Raises:
         Exception: Re-raises any embedding API errors after retries are exhausted.
